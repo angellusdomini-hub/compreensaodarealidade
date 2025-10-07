@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for a clean, professional look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Style for the input fields */
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        /* Oculta o cabeçalho e o botão na impressão do formulário principal */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+    <script>
+        // Configuração do Tailwind para cores personalizadas
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'campo-green': '#38a169',
+                        'campo-light': '#e9f7ef',
+                        'campo-dark': '#2c7a52',
+                    }
+                }
+            }
+        }
+
+        // Helper function to get checked values from checkboxes (with optional 'Outros' text input)
+        const getCheckedValues = (name) => {
+            const checked = Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(e => e.value);
+            
+            // Handle 'Outros' text input if the 'Outros' checkbox is checked
+            if (checked.includes('Outros')) {
+                const outrosInput = document.getElementById(name + '_outros');
+                if (outrosInput) {
+                    const outrosText = outrosInput.value.trim();
+                    const filtered = checked.filter(v => v !== 'Outros');
+                    return outrosText ? filtered.join(', ') + ', Outros: ' + outrosText : filtered.join(', ') + ' (Outros não especificado)';
+                }
+            }
+            return checked.join(', ') || 'Nenhum item selecionado.';
+        };
+        
+        // Helper for TextArea values
+        const getTextAreaValue = (id) => {
+            return document.getElementById(id)?.value.trim() || 'Não Informado / Não Aplicável';
+        };
+
+        // Função principal para gerar o relatório e abrir em nova janela
+        function generateReport() {
+            // 1. Coleta de Dados do Formulário
+            const nomeEscola = getTextAreaValue('nomeEscola');
+            const nomeProfessor = getTextAreaValue('nomeProfessor');
+            const cidadeEscola = getTextAreaValue('cidadeEscola');
+            const nreEscola = getTextAreaValue('nreEscola');
+            const tipoEscola = getTextAreaValue('tipoEscola');
+            const modalidade = getTextAreaValue('modalidade'); 
+            const etapasEnsino = Array.from(document.querySelectorAll('input[name="etapasEnsino"]:checked')).map(e => e.value).join(', ') || 'Não Informado';
+            const numAlunos = getTextAreaValue('numAlunos');
+            
+            const comunidadeNome = getTextAreaValue('comunidadeNome');
+            const faixaEtaria = getTextAreaValue('faixaEtaria');
+            const grupoEtnico = getCheckedValues('grupoEtnico');
+            const problemasInfra = getTextAreaValue('problemasInfra');
+
+            // 2. Eixo 1: Trabalho
+            const eixo1_renda_predominante = getCheckedValues('eixo1_renda_predominante');
+            const eixo1_status_trabalho = getCheckedValues('eixo1_status_trabalho');
+            const eixo1_culturas = getCheckedValues('eixo1_culturas');
+            const eixo1_destino_producao = getTextAreaValue('eixo1_destino_producao');
+            const eixo1_posse_terra = getTextAreaValue('eixo1_posse_terra');
+            const eixo1_trabalho_mulheres = getTextAreaValue('eixo1_trabalho_mulheres');
+            const eixo1_jovens_permanencia = getTextAreaValue('eixo1_jovens_permanencia');
+            const eixo1_tecnologia = getTextAreaValue('eixo1_tecnologia');
+            const eixo1_credito_financiamento = getTextAreaValue('eixo1_credito_financiamento');
+            
+            // 3. Eixo 2: Cultura e Identidade
+            const eixo2_festas = getCheckedValues('eixo2_festas');
+            const eixo2_religiosidade = getTextAreaValue('eixo2_religiosidade');
+            const eixo2_saberes_populares = getCheckedValues('eixo2_saberes_populares');
+            const eixo2_historia_local = getTextAreaValue('eixo2_historia_local');
+            const eixo2_lazer = getCheckedValues('eixo2_lazer');
+            const eixo2_cultura_curriculo = getTextAreaValue('eixo2_cultura_curriculo');
+
+            // 4. Eixo 3: Interdependência Campo-Cidade
+            const eixo3_acesso_servicos = getCheckedValues('eixo3_acesso_servicos');
+            const eixo3_transporte_estradas = getTextAreaValue('eixo3_transporte_estradas');
+            const eixo3_venda_producao = getTextAreaValue('eixo3_venda_producao');
+            const eixo3_acesso_agua = getCheckedValues('eixo3_acesso_agua'); 
+            const eixo3_escoamento = getCheckedValues('eixo3_escoamento');   
+            const eixo3_lixo_esgoto = getTextAreaValue('eixo3_lixo_esgoto');
+            const eixo3_problemas_ambientais = getCheckedValues('eixo3_problemas_ambientais');
+            const eixo3_conflitos = getTextAreaValue('eixo3_conflitos');
+
+            // 5. Eixo 4: Organização Política
+            const eixo4_grupos_ativos = getCheckedValues('eixo4_grupos_ativos');
+            const eixo4_lideranca = getTextAreaValue('eixo4_lideranca');
+            const eixo4_reivindicacao_principal = getTextAreaValue('eixo4_reivindicacao_principal');
+            const eixo4_informacao_politica = getTextAreaValue('eixo4_informacao_politica');
+
+            // 6. Construção do conteúdo HTML do Relatório (Corpo)
+            // USANDO CONCATENAÇÃO EM PEQUENOS BLOCOS PARA GARANTIR ESTABILIDADE DO PARSER
+            let reportBodyContent = '<div style="max-width: 800px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; border: 1px solid #ccc;">';
+                
+                // Cabeçalho
+                reportBodyContent += '<h2 style="color: #38a169; border-bottom: 2px solid #38a169; padding-bottom: 10px;">EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</h2>';
+                reportBodyContent += '<h3 style="margin-bottom: 5px;">' + nomeEscola + '</h3>';
+                reportBodyContent += '<p style="font-size: 12px; color: #666;">GE FOMRADORES EM AÇÃO Educação do Campo - 2025| Gerado em: ' + new Date().toLocaleDateString('pt-BR') + '</p>';
+                
+                // I. IDENTIFICAÇÃO E CONTEXTO GERAL
+                reportBodyContent += '<h3>I. IDENTIFICAÇÃO E CONTEXTO GERAL</h3>';
+                reportBodyContent += '<p><strong>Nome da Escola:</strong> ' + nomeEscola + '</p>';
+                reportBodyContent += '<p><strong>Nome do Professor Cursista:</strong> ' + nomeProfessor + '</p>';
+                reportBodyContent += '<p><strong>Cidade / NRE:</strong> ' + cidadeEscola + ' / ' + nreEscola + '</p>';
+                reportBodyContent += '<p><strong>Tipo de Escola:</strong> ' + tipoEscola + '</p>';
+                reportBodyContent += '<p><strong>Modalidade:</strong> ' + modalidade + '</p>';
+                reportBodyContent += '<p><strong>Etapas de Ensino:</strong> ' + etapasEnsino + '</p>';
+                reportBodyContent += '<p><strong>Nº de Alunos:</strong> ' + numAlunos + '</p>';
+                reportBodyContent += '<p><strong>Comunidade/Bairro:</strong> ' + comunidadeNome + '</p>';
+                reportBodyContent += '<p><strong>Faixa Etária Predominante:</strong> ' + faixaEtaria + '</p>';
+                reportBodyContent += '<p><strong>Grupos Sociais/Étnicos:</strong> ' + grupoEtnico + '</p>';
+                reportBodyContent += '<p><strong>Problemas de Infraestrutura Urgentes:</strong> ' + problemasInfra + '</p>';
+
+                // II. EIXO 1: TRABALHO
+                reportBodyContent += '<h3 style="margin-top: 20px;">II. EIXO 1: TRABALHO</h3>';
+                reportBodyContent += '<p><strong>Renda Predominante:</strong> ' + eixo1_renda_predominante + '</p>';
+                reportBodyContent += '<p><strong>Status Comum de Trabalho:</strong> ' + eixo1_status_trabalho + '</p>';
+                reportBodyContent += '<p><strong>Principais Culturas/Produtos:</strong> ' + eixo1_culturas + '</p>';
+                reportBodyContent += '<p><strong>Destino da Produção:</strong> ' + eixo1_destino_producao + '</p>';
+                reportBodyContent += '<p><strong>Forma de Posse da Terra (e documentação):</strong> ' + eixo1_posse_terra + '</p>';
+                reportBodyContent += '<p><strong>Tecnologia Utilizada e Impacto:</strong> ' + eixo1_tecnologia + '</p>';
+                reportBodyContent += '<p><strong>Fontes de Crédito/Financiamento:</strong> ' + eixo1_credito_financiamento + '</p>';
+                reportBodyContent += '<p><strong>Liderança Feminina no Trabalho (e não remunerado):</strong> ' + eixo1_trabalho_mulheres + '</p>';
+                reportBodyContent += '<p><strong>Permanência e Oportunidades para Jovens:</strong> ' + eixo1_jovens_permanencia + '</p>';
+
+                // III. EIXO 2: CULTURA E IDENTIDADE
+                reportBodyContent += '<h3 style="margin-top: 20px;">III. EIXO 2: CULTURA E IDENTIDADE</h3>';
+                reportBodyContent += '<p><strong>Festas/Celebrações:</strong> ' + eixo2_festas + '</p>';
+                reportBodyContent += '<p><strong>Saberes Populares:</strong> ' + eixo2_saberes_populares + '</p>';
+                reportBodyContent += '<p><strong>Papel da Religiosidade/Igreja:</strong> ' + eixo2_religiosidade + '</p>';
+                reportBodyContent += '<p><strong>História/Lenda/Expressão Local:</strong> ' + eixo2_historia_local + '</p>';
+                reportBodyContent += '<p><strong>Principais Formas de Lazer:</strong> ' + eixo2_lazer + '</p>';
+                reportBodyContent += '<p><strong>Integração Cultural no Currículo Escolar:</strong> ' + eixo2_cultura_curriculo + '</p>';
+
+                // IV. EIXO 3: INTERDEPENDÊNCIA CAMPO-CIDADE / QUESTÃO AGRÁRIA
+                reportBodyContent += '<h3 style="margin-top: 20px;">IV. EIXO 3: INTERDEPENDÊNCIA CAMPO-CIDADE / QUESTÃO AGRÁRIA</h3>';
+                reportBodyContent += '<p><strong>Acesso a Serviços Essenciais:</strong> ' + eixo3_acesso_servicos + '</p>';
+                reportBodyContent += '<p><strong>Transporte e Estradas:</strong> ' + eixo3_transporte_estradas + '</p>';
+                reportBodyContent += '<p><strong>Venda da Produção e Preços Justos:</strong> ' + eixo3_venda_producao + '</p>';
+                reportBodyContent += '<p><strong>Acesso à Água (Principal Fonte):</strong> ' + eixo3_acesso_agua + '</p>';
+                reportBodyContent += '<p><strong>Escoamento de Dejetos/Esgoto:</strong> ' + eixo3_escoamento + '</p>';
+                reportBodyContent += '<p><strong>Descarte de Lixo e Esgoto (Detalhado):</strong> ' + eixo3_lixo_esgoto + '</p>';
+                reportBodyContent += '<p><strong>Problemas Ambientais:</strong> ' + eixo3_problemas_ambientais + '</p>';
+                reportBodyContent += '<p><strong>Conflitos por Recursos Naturais:</strong> ' + eixo3_conflitos + '</p>';
+
+                // V. EIXO 4: ORGANIZAÇÃO POLÍTICA, MOVIMENTOS SOCIAIS E CIDADANIA
+                reportBodyContent += '<h3 style="margin-top: 20px;">V. EIXO 4: ORGANIZAÇÃO POLÍTICA, MOVIMENTOS SOCIAIS E CIDADANIA</h3>';
+                reportBodyContent += '<p><strong>Grupos/Associações Ativas:</strong> ' + eixo4_grupos_ativos + '</p>';
+                reportBodyContent += '<p><strong>Liderança (Formal/Informal) e Gênero:</strong> ' + eixo4_lideranca + '</p>';
+                reportBodyContent += '<p><strong>Principal Luta/Reivindicação Coletiva:</strong> ' + eixo4_reivindicacao_principal + '</p>';
+                reportBodyContent += '<p><strong>Formas de Informação e Participação Política:</strong> ' + eixo4_informacao_politica + '</p>';
+                
+                // Rodapé
+                reportBodyContent += '<footer style="text-align: center; font-size: 10px; color: #999; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">';
+                reportBodyContent += 'Este documento é um subsídio para a construção do Projeto Político-Pedagógico (PPP) da Escola do Campo, conforme as Diretrizes Curriculares do Paraná.';
+                reportBodyContent += '<br><button onclick="window.print()" style="margin-top: 10px; padding: 5px 15px; background-color: #38a169; color: white; border: none; border-radius: 5px; cursor: pointer;">Imprimir este Documento</button>';
+                reportBodyContent += '</footer>';
+            reportBodyContent += '</div>';
+
+            // 7. Construção do HTML completo da nova janela (mínimo de concatenações)
+            const fullHtml = '<!DOCTYPE html><html lang="pt-BR"><head>' +
+                '<meta charset="UTF-8">' +
+                '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+                '<title>EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE - ' + nomeEscola + '</title>' +
+                '<style>@media print { button { display: none; } }</style>' +
+                '</head>' +
+                '<body style="margin: 0; padding: 0;">' +
+                    reportBodyContent +
+                '</body>' +
+                '</html>';
+
+            // 8. Abrir nova janela e escrever o conteúdo
+            const newWindow = window.open('', '_blank');
+            if (newWindow) {
+                newWindow.document.write(fullHtml);
+                newWindow.document.close();
+                newWindow.focus();
+            } else {
+                // Em vez de usar alert(), que é bloqueado, usamos console.error.
+                console.error("Popup bloqueado. Por favor, permita popups para gerar o relatório em uma nova janela.");
+            }
+        }
+
+    </script>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-6 md:p-10 no-print">
+        
+        <!-- Title and Introduction -->
+        <h1 class="text-3xl font-bold text-campo-dark mb-2">EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</h1>
+        <p class="text-gray-600 mb-8">Utilize este formulário detalhado para estruturar a **Compreensão da Realidade** da sua escola e comunidade, de acordo com os Eixos Temáticos das DCEC/PR.</p>
+
+        <!-- I. IDENTIFICAÇÃO E CONTEXTO GERAL -->
+        <section class="mb-10 p-6 bg-campo-light rounded-lg shadow-inner">
+            <h2 class="text-xl font-semibold text-campo-dark mb-4 border-b pb-2">I. Identificação e Contexto Geral</h2>
+            
+            <div class="space-y-4">
+                <!-- Nome Escola, Cidade, NRE -->
+                <div class="md:flex md:space-x-4 space-y-4 md:space-y-0">
+                    <div class="w-full md:w-1/3">
+                        <label for="nomeEscola" class="block text-sm font-medium text-gray-700">Nome da Escola</label>
+                        <input type="text" id="nomeEscola" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <label for="cidadeEscola" class="block text-sm font-medium text-gray-700">Cidade</label>
+                        <input type="text" id="cidadeEscola" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <label for="nreEscola" class="block text-sm font-medium text-gray-700">NRE (Núcleo Regional de Educação)</label>
+                        <input type="text" id="nreEscola" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                    </div>
+                </div>
+
+                <!-- NOVO CAMPO: Nome do Professor Cursista -->
+                <div class="w-full">
+                    <label for="nomeProfessor" class="block text-sm font-medium text-gray-700">Nome do Professor Cursista</label>
+                    <input type="text" id="nomeProfessor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                </div>
+                
+                <!-- Tipo de Escola, Modalidade, Etapas, Alunos -->
+                <div class="md:flex md:space-x-4 space-y-4 md:space-y-0">
+                    <div class="w-full md:w-1/5">
+                        <label for="tipoEscola" class="block text-sm font-medium text-gray-700">Tipo de Escola</label>
+                        <select id="tipoEscola" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                            <option value="Regular">Regular (Unidocente/Pluridocente)</option>
+                            <option value="Ilhas">Ilhas</option>
+                            <option value="Indígena">Indígena</option>
+                            <option value="Integral">Integral</option>
+                            <option value="Itinerante">Itinerante</option>
+                        </select>
+                    </div>
+                    <!-- NOVO CAMPO: MODALIDADE -->
+                    <div class="w-full md:w-1/5">
+                        <label for="modalidade" class="block text-sm font-medium text-gray-700">Modalidade</label>
+                        <select id="modalidade" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                            <option value="Seriado">Seriado</option>
+                            <option value="Multianos">Multianos</option>
+                            <option value="Formação Humana">Formação Humana</option>
+                        </select>
+                    </div>
+                    <!-- FIM NOVO CAMPO -->
+                    <div class="w-full md:w-1/5">
+                        <label for="numAlunos" class="block text-sm font-medium text-gray-700">Número Total de Alunos</label>
+                        <input type="number" id="numAlunos" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Etapas de Ensino</label>
+                        <div class="flex flex-wrap gap-x-4">
+                            <label class="inline-flex items-center"><input type="checkbox" name="etapasEnsino" value="Fund. Anos Iniciais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Fund. Anos Iniciais</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="etapasEnsino" value="Fund. Anos Finais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Fund. Anos Finais</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="etapasEnsino" value="Ensino Médio" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Ensino Médio</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contexto Comunitário -->
+                <div>
+                    <label for="comunidadeNome" class="block text-sm font-medium text-gray-700">Nome da comunidade/bairro rural</label>
+                    <input type="text" id="comunidadeNome" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                </div>
+                <div class="md:flex md:space-x-4 space-y-4 md:space-y-0">
+                    <div class="w-full md:w-1/2">
+                        <label for="faixaEtaria" class="block text-sm font-medium text-gray-700">Número de famílias e faixa etária predominante</label>
+                        <input type="text" id="faixaEtaria" placeholder="Ex: 80 famílias, predomínio de adultos (30-50 anos)." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Grupo étnico/Origem</label>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 p-2 bg-white rounded-md border border-gray-300">
+                            <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Indígena" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Indígena</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Quilombola" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Quilombola</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Posseiros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Posseiros</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Assentados" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Assentados</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Ilhéus" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Ilhéus</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Famílias Migrantes" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Famílias Migrantes</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                            <input type="text" id="grupoEtnico_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="problemasInfra" class="block text-sm font-medium text-gray-700">Problemas de infraestrutura básica mais urgentes (água, luz, estrada, internet, etc.)</label>
+                    <textarea id="problemasInfra" placeholder="Ex: Qualidade da água, falta de asfalto na principal estrada, sinal de internet ruim." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- II. EIXO 1: TRABALHO -->
+        <section class="space-y-8 mb-10">
+            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-campo-dark mb-3">II. Eixo 1: Trabalho (Divisão Social e Territorial)</h3>
+                
+                <!-- Renda e Atividade Predominante (Checkboxes) -->
+                <label class="block text-sm font-medium text-gray-700 mb-2">2.1. Principal Fonte de Renda / Atividade Predominante:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Agricultura Familiar" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Agricultura Familiar</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Agronegócio/Grandes Fazendas" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Agronegócio/Grandes Fazendas</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Pecuária (Leite/Corte)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Pecuária (Leite/Corte)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Benefícios Sociais/Aposentadorias" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Benefícios Sociais/Aposentadorias</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Serviços na Cidade" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Serviços na Cidade</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo1_renda_predominante_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+
+                <!-- Status da Relação de Trabalho Comum (Checkboxes) -->
+                <label class="block text-sm font-medium text-gray-700 mb-2">2.2. Status da Relação de Trabalho Comum na Comunidade:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Proprietário(a) / Familiar" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Proprietário(a) / Familiar</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Assalariado(a) (Com carteira)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Assalariado(a) (Com carteira)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Assalariado(a) (Sem carteira)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Assalariado(a) (Sem carteira)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Meeiro(a) ou Parceiro(a)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Meeiro(a) ou Parceiro(a)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Aposentado(a)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Aposentado(a)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo1_status_trabalho_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+                
+                <!-- Culturas/Produção Principal (Checkboxes) -->
+                <label class="block text-sm font-medium text-gray-700 mb-2">2.3. Tipos de Culturas ou Produção Principal:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Soja" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Soja</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Milho" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Milho</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Trigo/Cereais de Inverno" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Trigo/Cereais de Inverno</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Fumo/Cana-de-Açúcar" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Fumo/Cana-de-Açúcar</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Hortifrúti / Olericultura" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Hortifrúti / Olericultura</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Leite/Gado" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Leite/Gado</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Extrativismo/Madeira" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Extrativismo/Madeira</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo1_culturas_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+
+                <!-- Campos de texto Eixo 1 -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="eixo1_destino_producao" class="block text-sm font-medium text-gray-700">2.4. Destino dos produtos (consumo próprio, mercado local, exportação)?</label>
+                        <textarea id="eixo1_destino_producao" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo1_posse_terra" class="block text-sm font-medium text-gray-700">2.5. Qual a principal forma de posse da terra (familiar, patronal, assentamento) e grau de documentação?</label>
+                        <textarea id="eixo1_posse_terra" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo1_trabalho_mulheres" class="block text-sm font-medium text-gray-700">2.6. Atividades/tarefas econômicas que as mulheres lideram ou executam (incluindo trabalho não remunerado):</label>
+                        <textarea id="eixo1_trabalho_mulheres" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo1_jovens_permanencia" class="block text-sm font-medium text-gray-700">2.7. Os jovens querem permanecer no campo? Quais as oportunidades de trabalho para eles?</label>
+                        <textarea id="eixo1_jovens_permanencia" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo1_tecnologia" class="block text-sm font-medium text-gray-700">2.8. Que tipo de tecnologia é mais utilizado no processo produtivo local e como impacta o modo de trabalhar?</label>
+                        <textarea id="eixo1_tecnologia" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo1_credito_financiamento" class="block text-sm font-medium text-gray-700">2.9. Principais fontes de crédito ou financiamento para a produção local:</label>
+                        <textarea id="eixo1_credito_financiamento" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- III. EIXO 2: CULTURA E IDENTIDADE -->
+            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-campo-dark mb-3">III. Eixo 2: Cultura e Identidade</h3>
+                
+                <label class="block text-sm font-medium text-gray-700 mb-2">3.1. Festas, celebrações ou tradições mais importantes:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Festa do Padroeiro" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festa do Padroeiro</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Festa da Colheita/Tradição Agrícola" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festa da Colheita/Tradição Agrícola</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Festas Juninas/Julhinas" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festas Juninas/Julhinas</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Rodeios/Eventos Tradicionais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Rodeios/Eventos Tradicionais</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo2_festas_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">3.2. Saberes populares valorizados e utilizados no dia a dia:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Uso de plantas medicinais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Uso de plantas medicinais</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Culinária típica/Receitas tradicionais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Culinária típica/Receitas tradicionais</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Técnicas de artesanato/manuais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Técnicas de artesanato/manuais</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Previsão do tempo (sinais da natureza)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Previsão do tempo (sinais da natureza)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo2_saberes_populares_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">3.3. Principais formas de lazer e entretenimento:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Esportes (Futebol, Vôlei)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Esportes (Futebol, Vôlei)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Eventos da Igreja" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Eventos da Igreja</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Festas em Clubes Rurais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festas em Clubes Rurais</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Ida à Cidade/Shopping" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Ida à Cidade/Shopping</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Uso de Internet/Jogos" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Uso de Internet/Jogos</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo2_lazer_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+
+                <!-- Campos de texto Eixo 2 -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="eixo2_religiosidade" class="block text-sm font-medium text-gray-700">3.4. Qual o papel da religiosidade/igreja na vida social e organizacional da comunidade?</label>
+                        <textarea id="eixo2_religiosidade" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo2_historia_local" class="block text-sm font-medium text-gray-700">3.5. Há alguma história, lenda ou expressão que defina a identidade local?</label>
+                        <textarea id="eixo2_historia_local" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo2_cultura_curriculo" class="block text-sm font-medium text-gray-700">3.6. Como a cultura local é representada no currículo ou nas atividades da escola?</label>
+                        <textarea id="eixo2_cultura_curriculo" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- IV. EIXO 3: INTERDEPENDÊNCIA CAMPO-CIDADE / QUESTÃO AGRÁRIA -->
+            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-campo-dark mb-3">IV. Eixo 3: Interdependência Campo-Cidade / Questão Agrária</h3>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">4.1. A comunidade tem acesso fácil e rápido a quais serviços essenciais?</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Posto de Saúde/Atendimento Médico" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Posto de Saúde/Atendimento Médico</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Ensino Técnico/Superior" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Ensino Técnico/Superior</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Serviços Bancários" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Serviços Bancários</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Serviços de Correio" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Serviços de Correio</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Posto de Gasolina" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Posto de Gasolina</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Mercados (Atacado/Varejo)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Mercados (Atacado/Varejo)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo3_acesso_servicos_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">4.2. Principais problemas ambientais do território:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Contaminação por Agrotóxicos" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Contaminação por Agrotóxicos</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Poluição do Ar (Fumaça ou Odor Forte)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Poluição do Ar (Fumaça ou Odor Forte)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Desmatamento ou Erosão" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Desmatamento ou Erosão</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Poluição Hídrica (Rios/Nascentes)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Poluição Hídrica (Rios/Nascentes)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Monocultura" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Monocultura</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo3_problemas_ambientais_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+                
+                <!-- Campos de texto Eixo 3 -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="eixo3_transporte_estradas" class="block text-sm font-medium text-gray-700">4.3. Qual o estado de conservação das estradas rurais e a eficiência do transporte público (não escolar)?</label>
+                        <textarea id="eixo3_transporte_estradas" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo3_venda_producao" class="block text-sm font-medium text-gray-700">4.4. Onde a produção local é vendida e a comunidade consegue ter acesso a preços justos?</label>
+                        <textarea id="eixo3_venda_producao" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    
+                    <!-- Acesso à Água (CHECKBOXES) -->
+                    <div class="border p-3 rounded-md bg-white">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">4.5. Acesso à Água (Principal Fonte):</label>
+                        <div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_agua" value="Encanada/Tratada" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Encanada/Tratada (Rede Pública)</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_agua" value="Poço Artesiano" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Poço Artesiano</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_agua" value="Poço Comum/Nascente" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Poço Comum/Nascente</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_agua" value="Água de Chuva" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Água de Chuva</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_agua" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                            <input type="text" id="eixo3_acesso_agua_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Escoamento de Dejetos (CHECKBOXES) -->
+                    <div class="border p-3 rounded-md bg-white">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">4.6. Escoamento de Dejetos / Esgoto (Principal Forma):</label>
+                        <div class="flex flex-wrap gap-4">
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_escoamento" value="Rede de Esgoto" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Rede de Esgoto (Tratado)</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_escoamento" value="Fossa Séptica" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Fossa Séptica</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_escoamento" value="Fossa Negra/Rios" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Fossa Negra/Rios</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_escoamento" value="Compostagem" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Compostagem</span></label>
+                            <label class="inline-flex items-center"><input type="checkbox" name="eixo3_escoamento" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                            <input type="text" id="eixo3_escoamento_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="eixo3_lixo_esgoto" class="block text-sm font-medium text-gray-700">4.7. Como é feito o descarte e o tratamento do lixo (coleta, queima, aterro) na comunidade e na escola?</label>
+                        <textarea id="eixo3_lixo_esgoto" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo3_conflitos" class="block text-sm font-medium text-gray-700">4.8. Houve conflitos recentes pelo uso da água, da terra ou de outros recursos naturais na região?</label>
+                        <textarea id="eixo3_conflitos" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- V. EIXO 4: ORGANIZAÇÃO POLÍTICA, MOVIMENTOS SOCIAIS E CIDADANIA -->
+            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
+                <h3 class="text-lg font-semibold text-campo-dark mb-3">V. Eixo 4: Organização Política, Movimentos Sociais e Cidadania</h3>
+                
+                <label class="block text-sm font-medium text-gray-700 mb-2">5.1. Grupos ou associações mais ativos na comunidade:</label>
+                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Associação de Moradores/APMF" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Associação de Moradores/APMF</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Sindicato Rural / de Trabalhadores" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Sindicato Rural / de Trabalhadores</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Cooperativas de Produção/Crédito" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Cooperativas de Produção/Crédito</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Movimentos Sociais (MST, MAB, etc.)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Movimentos Sociais (MST, MAB, etc.)</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Grupos da Igreja/Religiosos" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Grupos da Igreja/Religiosos</span></label>
+                    <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Outros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Outros</span></label>
+                    <input type="text" id="eixo4_grupos_ativos_outros" placeholder="Especifique 'Outros'" class="mt-1 block w-full md:w-48 rounded-md border-gray-300 shadow-sm p-1 border text-sm">
+                </div>
+
+                <!-- Campos de texto Eixo 4 -->
+                <div class="space-y-4">
+                    <div>
+                        <label for="eixo4_lideranca" class="block text-sm font-medium text-gray-700">5.2. Quem é a principal liderança (formal ou informal) e há lideranças jovens ou femininas ativas?</label>
+                        <textarea id="eixo4_lideranca" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo4_reivindicacao_principal" class="block text-sm font-medium text-gray-700">5.3. Qual é a principal reivindicação ou luta coletiva em andamento no momento?</label>
+                        <textarea id="eixo4_reivindicacao_principal" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                    <div>
+                        <label for="eixo4_informacao_politica" class="block text-sm font-medium text-gray-700">5.4. Como a comunidade se informa sobre política e participa das decisões do governo?</label>
+                        <textarea id="eixo4_informacao_politica" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- REPORT GENERATION BUTTON -->
+        <div class="text-center no-print">
+            <button onclick="generateReport()" class="px-8 py-3 bg-campo-green text-white font-bold rounded-full shadow-lg hover:bg-campo-dark transition duration-300 focus:outline-none focus:ring-4 focus:ring-campo-green focus:ring-opacity-50">
+                Gerar Relatório Estruturado em Nova Janela
+            </button>
+        </div>
+
+    </div>
+
+</body>
+</html>
