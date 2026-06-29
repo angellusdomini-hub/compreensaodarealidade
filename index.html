@@ -1,43 +1,264 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom font for a clean, professional look */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f9fb;
-        }
-        /* Style for the input fields */
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        /* Oculta o cabeçalho e o botão na impressão do formulário principal */
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-        }
-    </style>
-    <script>
-        // Configuração do Tailwind para cores personalizadas
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'campo-green': '#38a169',
-                        'campo-light': '#e9f7ef',
-                        'campo-dark': '#2c7a52',
-                    }
-                }
-            }
-        }
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educação do Campo: Compreensão da Realidade - versão teste</title>
+  <style>
+:root {
+  --ink: #1f2933;
+  --muted: #64748b;
+  --line: #d9e2ec;
+  --paper: #ffffff;
+  --soft: #f6f8fb;
+  --field: #fbfdfc;
+  --green: #2f8f5b;
+  --green-dark: #246b46;
+  --blue: #2563a8;
+  --amber: #b7791f;
+  --focus: #7cc99b;
+  --shadow: 0 16px 45px rgba(31, 41, 51, .10);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(47, 143, 91, .10), rgba(37, 99, 168, .05) 280px, transparent 520px),
+    var(--soft);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(47, 143, 91, .10) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, black, transparent 55%);
+}
+.no-print { position: relative; }
+.max-w-4xl {
+  width: min(1120px, calc(100% - 32px));
+  margin: 32px auto 120px;
+  background: transparent;
+}
+.max-w-4xl > h1 {
+  margin: 0;
+  max-width: 860px;
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.02;
+  letter-spacing: 0;
+  color: #173f2c;
+}
+.max-w-4xl > p {
+  max-width: 760px;
+  margin: 18px 0 26px;
+  font-size: 1.05rem;
+  color: #435266;
+}
+.max-w-4xl > p strong { color: var(--green-dark); }
+.form-status {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: center;
+  margin: 22px 0 28px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 10px 26px rgba(31,41,51,.08);
+  backdrop-filter: blur(10px);
+}
+.progress-track {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e6edf3;
+}
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  transition: width .25s ease;
+}
+.progress-label { color: var(--muted); font-size: .93rem; white-space: nowrap; }
+.quick-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 -16px 24px;
+  padding: 10px 16px;
+  background: rgba(246,248,251,.90);
+  border-bottom: 1px solid rgba(217,226,236,.85);
+  backdrop-filter: blur(12px);
+}
+.quick-nav button {
+  flex: 0 0 auto;
+  border: 1px solid #c8d6e2;
+  border-radius: 999px;
+  background: white;
+  color: #334e68;
+  padding: 8px 12px;
+  font-weight: 700;
+  font-size: .85rem;
+}
+.quick-nav button:hover { border-color: var(--green); color: var(--green-dark); }
+section,
+section > div[class*="border"] {
+  margin: 0 0 22px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255,255,255,.92);
+  box-shadow: var(--shadow);
+}
+section { border-top: 6px solid var(--green); }
+section > div[class*="border"] { box-shadow: 0 10px 28px rgba(31, 41, 51, .07); border-top: 4px solid var(--blue); }
+h2, h3 {
+  margin: 0 0 18px;
+  color: #1f5138;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.16rem; }
+.space-y-4 > * + * { margin-top: 16px; }
+.space-y-8 > * + * { margin-top: 24px; }
+.md\:flex, .flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center, .inline-flex { display: inline-flex; align-items: center; }
+.gap-4 { gap: 10px; }
+.gap-x-4 { column-gap: 10px; }
+.gap-y-2 { row-gap: 8px; }
+.w-full { width: 100%; }
+.flex-1 { flex: 1 1 260px; }
+label.block, label[class*="block"] {
+  display: block;
+  margin-bottom: 7px;
+  color: #334e68;
+  font-weight: 750;
+  font-size: .94rem;
+}
+input[type="text"], input[type="number"], select, textarea {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #cbd5df;
+  border-radius: 8px;
+  background: var(--field);
+  color: var(--ink);
+  padding: 10px 12px;
+  font: inherit;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+textarea { min-height: 116px; resize: vertical; }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--green);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(124,201,155,.22);
+}
+.p-2, .p-3, .p-6 { padding: 0; }
+div[class*="bg-gray-50"], div[class*="bg-white"][class*="border"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 16px;
+  padding: 12px;
+  border: 1px solid #d8e2eb;
+  border-radius: 8px;
+  background: #f8fbfa;
+}
+label.inline-flex {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid #d8e2eb;
+  border-radius: 999px;
+  background: white;
+  color: #334e68;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+label.inline-flex:hover { border-color: var(--green); transform: translateY(-1px); }
+label.inline-flex input { accent-color: var(--green); }
+label.inline-flex span { margin: 0; font-size: .9rem; }
+label.inline-flex:has(input:checked) {
+  border-color: rgba(47,143,91,.7);
+  background: #eaf7ef;
+  color: #173f2c;
+}
+.text-center.no-print {
+  position: sticky;
+  bottom: 12px;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 26px;
+  padding: 12px;
+  border: 1px solid rgba(217,226,236,.9);
+  border-radius: 8px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 16px 38px rgba(31,41,51,.16);
+  backdrop-filter: blur(10px);
+}
+button, .text-center.no-print button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--green);
+  color: #fff;
+  padding: 11px 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(47,143,91,.22);
+}
+button:hover { background: var(--green-dark); }
+.secondary-action {
+  background: #edf2f7 !important;
+  color: #29445e !important;
+  box-shadow: none !important;
+}
+.field-hint {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: .82rem;
+}
+@media (min-width: 768px) {
+  .md\:flex { display: flex; gap: 16px; }
+  .md\:space-x-4 > * + * { margin-left: 0; }
+  .md\:space-y-0 > * + * { margin-top: 0; }
+  .md\:w-1\/2 { width: 50%; }
+  .md\:w-1\/3 { width: 33.333%; }
+  .md\:w-1\/5 { width: 20%; }
+  .md\:w-48 { width: 12rem; }
+}
+@media (max-width: 767px) {
+  .max-w-4xl { width: min(100% - 20px, 1120px); margin-top: 18px; }
+  section, section > div[class*="border"] { padding: 16px; }
+  .md\:flex { display: block; }
+  .md\:flex > * + * { margin-top: 14px; }
+  .form-status { grid-template-columns: 1fr; }
+  .text-center.no-print { align-items: stretch; flex-direction: column; }
+}
+@media print {
+  body { background: white; }
+  .no-print, .quick-nav, .form-status { display: none !important; }
+  section, section > div[class*="border"] { box-shadow: none; border-color: #ddd; }
+}
+</style>
+  <script>
         // Helper function to get checked values from checkboxes (with optional 'Outros' text input)
         const getCheckedValues = (name) => {
             const checked = Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(e => e.value);
@@ -204,15 +425,19 @@
             }
         }
 
-    </script>
+    
+window.generateReport = generateReport;
+window.__reportScriptLoaded = true;
+</script>
 </head>
-<body class="p-4 md:p-8">
+<body>
+
 
     <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-6 md:p-10 no-print">
         
         <!-- Title and Introduction -->
-        <h1 class="text-3xl font-bold text-campo-dark mb-2">EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</h1>
-        <p class="text-gray-600 mb-8">Utilize este formulário detalhado para estruturar a **Compreensão da Realidade** da sua escola e comunidade, de acordo com os Eixos Temáticos das DCEC/PR.</p>
+        <h1 class="text-3xl font-bold text-campo-dark mb-2">Educação do Campo: Compreensão da Realidade</h1>
+        <p class="text-gray-600 mb-8">Utilize este formulário detalhado para estruturar a <strong>Compreensão da Realidade</strong> da sua escola e comunidade, de acordo com os Eixos Temáticos das DCEC/PR.</p>
 
         <!-- I. IDENTIFICAÇÃO E CONTEXTO GERAL -->
         <section class="mb-10 p-6 bg-campo-light rounded-lg shadow-inner">
@@ -543,12 +768,113 @@
 
         <!-- REPORT GENERATION BUTTON -->
         <div class="text-center no-print">
-            <button onclick="generateReport()" class="px-8 py-3 bg-campo-green text-white font-bold rounded-full shadow-lg hover:bg-campo-dark transition duration-300 focus:outline-none focus:ring-4 focus:ring-campo-green focus:ring-opacity-50">
+            <button onclick="window.generateReport()" class="px-8 py-3 bg-campo-green text-white font-bold rounded-full shadow-lg hover:bg-campo-dark transition duration-300 focus:outline-none focus:ring-4 focus:ring-campo-green focus:ring-opacity-50">
                 Gerar Relatório Estruturado em Nova Janela
             </button>
         </div>
 
     </div>
 
+
+
+
+<script>
+(function () {
+  const ready = (fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn();
+  ready(() => {
+    const main = document.querySelector('.max-w-4xl');
+    if (!main) return;
+    const title = main.querySelector('h1');
+    if (title) title.textContent = 'Educação do Campo: Compreensão da Realidade';
+    const intro = main.querySelector('p');
+    if (intro) intro.innerHTML = 'Formulário orientador para registrar a <strong>Compreensão da Realidade</strong> da escola e da comunidade, com organização por eixos temáticos.';
+
+    const status = document.createElement('div');
+    status.className = 'form-status no-print';
+    status.innerHTML = '<div class="progress-track"><div class="progress-fill"></div></div><div class="progress-label">0% preenchido</div>';
+    intro ? intro.after(status) : main.prepend(status);
+
+    const nav = document.createElement('nav');
+    nav.className = 'quick-nav no-print';
+    const headings = [...main.querySelectorAll('h2, h3')];
+    headings.forEach((h, index) => {
+      h.id = h.id || 'secao-' + (index + 1);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = h.textContent.replace(/^([IVX]+|d+).s*/, '').trim().slice(0, 34);
+      button.addEventListener('click', () => h.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      nav.appendChild(button);
+    });
+    status.after(nav);
+
+    document.querySelectorAll('textarea').forEach((el) => {
+      if (!el.placeholder) el.placeholder = 'Digite aqui observações, exemplos e evidências da realidade local.';
+    });
+
+    const actionBar = document.querySelector('.text-center.no-print');
+    if (actionBar) {
+      const save = document.createElement('button');
+      save.type = 'button';
+      save.className = 'secondary-action';
+      save.textContent = 'Salvar rascunho';
+      save.addEventListener('click', () => {
+        const data = {};
+        document.querySelectorAll('input, textarea, select').forEach((el) => {
+          const key = el.id || el.name + ':' + el.value;
+          if (!key) return;
+          data[key] = el.type === 'checkbox' ? el.checked : el.value;
+        });
+        localStorage.setItem('compreensao-realidade-rascunho', JSON.stringify(data));
+        save.textContent = 'Rascunho salvo';
+        setTimeout(() => save.textContent = 'Salvar rascunho', 1600);
+      });
+      const clear = document.createElement('button');
+      clear.type = 'button';
+      clear.className = 'secondary-action';
+      clear.textContent = 'Limpar';
+      clear.addEventListener('click', () => {
+        if (!confirm('Limpar todos os campos preenchidos nesta cópia de teste?')) return;
+        document.querySelectorAll('input, textarea, select').forEach((el) => {
+          if (el.type === 'checkbox') el.checked = false;
+          else el.value = '';
+        });
+        localStorage.removeItem('compreensao-realidade-rascunho');
+        updateProgress();
+      });
+      actionBar.prepend(save);
+      actionBar.appendChild(clear);
+    }
+
+    const saved = localStorage.getItem('compreensao-realidade-rascunho');
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        document.querySelectorAll('input, textarea, select').forEach((el) => {
+          const key = el.id || el.name + ':' + el.value;
+          if (Object.prototype.hasOwnProperty.call(data, key)) {
+            if (el.type === 'checkbox') el.checked = !!data[key];
+            else el.value = data[key];
+          }
+        });
+      } catch {}
+    }
+
+    function isFilled(el) {
+      if (el.type === 'checkbox') return el.checked;
+      return String(el.value || '').trim().length > 0;
+    }
+    function updateProgress() {
+      const controls = [...document.querySelectorAll('input, textarea, select')].filter((el) => !el.id?.endsWith('_outros'));
+      const filled = controls.filter(isFilled).length;
+      const pct = controls.length ? Math.round((filled / controls.length) * 100) : 0;
+      document.querySelector('.progress-fill').style.width = pct + '%';
+      document.querySelector('.progress-label').textContent = pct + '% preenchido';
+    }
+    document.addEventListener('input', updateProgress);
+    document.addEventListener('change', updateProgress);
+    updateProgress();
+  });
+})();
+</script>
 </body>
 </html>
