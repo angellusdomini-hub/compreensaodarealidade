@@ -3,220 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</title>
+    <title>EDUCAÇÃO DO CAMPO — COMPREENSÃO DA REALIDADE</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom font for a clean, professional look */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f9fb;
+    
+<style>
+    :root{
+        --green-950:#17372b;
+        --green-900:#1f4d3b;
+        --green-800:#2b684f;
+        --green-700:#347b5c;
+        --green-600:#3f8f69;
+        --green-100:#eaf4ee;
+        --green-50:#f5faf7;
+        --sand-100:#f4efe6;
+        --slate-950:#17202a;
+        --slate-700:#4a5568;
+        --slate-500:#718096;
+        --border:#d9e2dc;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+            radial-gradient(circle at top right, rgba(52,123,92,.10), transparent 26rem),
+            linear-gradient(180deg, #f8fbf9 0%, #f4f7f5 100%);
+        color: var(--slate-950);
+    }
+
+    .app-shell{
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    .hero{
+        overflow:hidden;
+        position:relative;
+        background:
+            linear-gradient(135deg, rgba(23,55,43,.98), rgba(52,123,92,.94)),
+            linear-gradient(45deg, transparent 0 65%, rgba(255,255,255,.08) 65% 100%);
+        color:white;
+        border-radius: 24px;
+        box-shadow: 0 24px 60px rgba(23,55,43,.18);
+    }
+
+    .hero::after{
+        content:"";
+        position:absolute;
+        width:280px;
+        height:280px;
+        border-radius:50%;
+        right:-90px;
+        top:-100px;
+        border:1px solid rgba(255,255,255,.18);
+        box-shadow:0 0 0 42px rgba(255,255,255,.04),0 0 0 84px rgba(255,255,255,.025);
+    }
+
+    .eyebrow{
+        display:inline-flex;
+        align-items:center;
+        gap:.5rem;
+        padding:.38rem .7rem;
+        border-radius:999px;
+        background:rgba(255,255,255,.12);
+        border:1px solid rgba(255,255,255,.18);
+        font-size:.78rem;
+        font-weight:700;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+    }
+
+    .section-card{
+        background:white;
+        border:1px solid var(--border);
+        border-radius:20px;
+        box-shadow:0 10px 30px rgba(30,72,54,.07);
+        overflow:hidden;
+    }
+
+    .section-head{
+        padding:1.1rem 1.25rem;
+        background:linear-gradient(180deg, var(--green-50), #fff);
+        border-bottom:1px solid var(--border);
+    }
+
+    .section-body{
+        padding:1.25rem;
+    }
+
+    label{
+        color:#2f3c36 !important;
+        font-weight:650 !important;
+        line-height:1.35;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea{
+        width:100%;
+        border:1px solid #cfd9d3 !important;
+        border-radius:12px !important;
+        padding:.72rem .82rem !important;
+        background:#fff !important;
+        color:#1f2937 !important;
+        transition:.2s ease !important;
+        box-shadow:0 1px 2px rgba(0,0,0,.02) !important;
+    }
+
+    textarea{
+        min-height:112px;
+        resize:vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus{
+        outline:none !important;
+        border-color:var(--green-600) !important;
+        box-shadow:0 0 0 4px rgba(63,143,105,.12) !important;
+    }
+
+    .option-panel{
+        background:#fbfcfb;
+        border:1px solid #dfe7e2;
+        border-radius:14px;
+        padding:.9rem;
+    }
+
+    input[type="checkbox"]{
+        width:1rem;
+        height:1rem;
+        accent-color:var(--green-700);
+    }
+
+    .sticky-summary{
+        position:sticky;
+        top:1rem;
+    }
+
+    .step-link{
+        display:flex;
+        align-items:center;
+        gap:.65rem;
+        padding:.7rem .8rem;
+        border-radius:12px;
+        color:#385247;
+        font-size:.9rem;
+        transition:.2s;
+        text-decoration:none;
+    }
+
+    .step-link:hover{
+        background:var(--green-50);
+        color:var(--green-900);
+    }
+
+    .step-dot{
+        width:1.65rem;
+        height:1.65rem;
+        display:inline-grid;
+        place-items:center;
+        border-radius:999px;
+        background:var(--green-100);
+        color:var(--green-800);
+        font-weight:800;
+        font-size:.75rem;
+        flex:0 0 auto;
+    }
+
+    .primary-btn{
+        border:none;
+        border-radius:14px;
+        padding:.9rem 1.25rem;
+        background:linear-gradient(135deg,var(--green-800),var(--green-600));
+        color:#fff;
+        font-weight:800;
+        box-shadow:0 12px 26px rgba(52,123,92,.24);
+        cursor:pointer;
+        transition:.2s ease;
+    }
+    .primary-btn:hover{
+        transform:translateY(-1px);
+        box-shadow:0 16px 30px rgba(52,123,92,.28);
+    }
+
+    .subtle-badge{
+        display:inline-block;
+        border-radius:999px;
+        padding:.28rem .55rem;
+        font-size:.75rem;
+        background:var(--sand-100);
+        color:#6c5b43;
+        font-weight:700;
+    }
+
+    .helper{
+        color:var(--slate-500);
+        font-size:.82rem;
+        margin-top:.28rem;
+    }
+
+    @media (max-width: 1024px){
+        .sticky-summary{position:static;}
+    }
+
+    @media print {
+        body{background:#fff !important;}
+        .no-print{display:none !important;}
+        .section-card{
+            box-shadow:none !important;
+            break-inside:avoid;
         }
-        /* Style for the input fields */
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        /* Oculta o cabeçalho e o botão na impressão do formulário principal */
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-        }
-    </style>
-    <script>
-        // Configuração do Tailwind para cores personalizadas
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'campo-green': '#38a169',
-                        'campo-light': '#e9f7ef',
-                        'campo-dark': '#2c7a52',
-                    }
+    }
+</style>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'campo-green': '#347b5c',
+                    'campo-light': '#eef7f1',
+                    'campo-dark': '#1f4d3b',
                 }
             }
         }
+    }
+</script>
 
-        // Helper function to get checked values from checkboxes (with optional 'Outros' text input)
-        const getCheckedValues = (name) => {
-            const checked = Array.from(document.querySelectorAll('input[name="' + name + '"]:checked')).map(e => e.value);
-            
-            // Handle 'Outros' text input if the 'Outros' checkbox is checked
-            if (checked.includes('Outros')) {
-                const outrosInput = document.getElementById(name + '_outros');
-                if (outrosInput) {
-                    const outrosText = outrosInput.value.trim();
-                    const filtered = checked.filter(v => v !== 'Outros');
-                    return outrosText ? filtered.join(', ') + ', Outros: ' + outrosText : filtered.join(', ') + ' (Outros não especificado)';
-                }
-            }
-            return checked.join(', ') || 'Nenhum item selecionado.';
-        };
-        
-        // Helper for TextArea values
-        const getTextAreaValue = (id) => {
-            return document.getElementById(id)?.value.trim() || 'Não Informado / Não Aplicável';
-        };
-
-        // Função principal para gerar o relatório e abrir em nova janela
-        function generateReport() {
-            // 1. Coleta de Dados do Formulário
-            const nomeEscola = getTextAreaValue('nomeEscola');
-            const nomeProfessor = getTextAreaValue('nomeProfessor');
-            const cidadeEscola = getTextAreaValue('cidadeEscola');
-            const nreEscola = getTextAreaValue('nreEscola');
-            const tipoEscola = getTextAreaValue('tipoEscola');
-            const modalidade = getTextAreaValue('modalidade'); 
-            const etapasEnsino = Array.from(document.querySelectorAll('input[name="etapasEnsino"]:checked')).map(e => e.value).join(', ') || 'Não Informado';
-            const numAlunos = getTextAreaValue('numAlunos');
-            
-            const comunidadeNome = getTextAreaValue('comunidadeNome');
-            const faixaEtaria = getTextAreaValue('faixaEtaria');
-            const grupoEtnico = getCheckedValues('grupoEtnico');
-            const problemasInfra = getTextAreaValue('problemasInfra');
-
-            // 2. Eixo 1: Trabalho
-            const eixo1_renda_predominante = getCheckedValues('eixo1_renda_predominante');
-            const eixo1_status_trabalho = getCheckedValues('eixo1_status_trabalho');
-            const eixo1_culturas = getCheckedValues('eixo1_culturas');
-            const eixo1_destino_producao = getTextAreaValue('eixo1_destino_producao');
-            const eixo1_posse_terra = getTextAreaValue('eixo1_posse_terra');
-            const eixo1_trabalho_mulheres = getTextAreaValue('eixo1_trabalho_mulheres');
-            const eixo1_jovens_permanencia = getTextAreaValue('eixo1_jovens_permanencia');
-            const eixo1_tecnologia = getTextAreaValue('eixo1_tecnologia');
-            const eixo1_credito_financiamento = getTextAreaValue('eixo1_credito_financiamento');
-            
-            // 3. Eixo 2: Cultura e Identidade
-            const eixo2_festas = getCheckedValues('eixo2_festas');
-            const eixo2_religiosidade = getTextAreaValue('eixo2_religiosidade');
-            const eixo2_saberes_populares = getCheckedValues('eixo2_saberes_populares');
-            const eixo2_historia_local = getTextAreaValue('eixo2_historia_local');
-            const eixo2_lazer = getCheckedValues('eixo2_lazer');
-            const eixo2_cultura_curriculo = getTextAreaValue('eixo2_cultura_curriculo');
-
-            // 4. Eixo 3: Interdependência Campo-Cidade
-            const eixo3_acesso_servicos = getCheckedValues('eixo3_acesso_servicos');
-            const eixo3_transporte_estradas = getTextAreaValue('eixo3_transporte_estradas');
-            const eixo3_venda_producao = getTextAreaValue('eixo3_venda_producao');
-            const eixo3_acesso_agua = getCheckedValues('eixo3_acesso_agua'); 
-            const eixo3_escoamento = getCheckedValues('eixo3_escoamento');   
-            const eixo3_lixo_esgoto = getTextAreaValue('eixo3_lixo_esgoto');
-            const eixo3_problemas_ambientais = getCheckedValues('eixo3_problemas_ambientais');
-            const eixo3_conflitos = getTextAreaValue('eixo3_conflitos');
-
-            // 5. Eixo 4: Organização Política
-            const eixo4_grupos_ativos = getCheckedValues('eixo4_grupos_ativos');
-            const eixo4_lideranca = getTextAreaValue('eixo4_lideranca');
-            const eixo4_reivindicacao_principal = getTextAreaValue('eixo4_reivindicacao_principal');
-            const eixo4_informacao_politica = getTextAreaValue('eixo4_informacao_politica');
-
-            // 6. Construção do conteúdo HTML do Relatório (Corpo)
-            // USANDO CONCATENAÇÃO EM PEQUENOS BLOCOS PARA GARANTIR ESTABILIDADE DO PARSER
-            let reportBodyContent = '<div style="max-width: 800px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; border: 1px solid #ccc;">';
-                
-                // Cabeçalho
-                reportBodyContent += '<h2 style="color: #38a169; border-bottom: 2px solid #38a169; padding-bottom: 10px;">EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</h2>';
-                reportBodyContent += '<h3 style="margin-bottom: 5px;">' + nomeEscola + '</h3>';
-                reportBodyContent += '<p style="font-size: 12px; color: #666;">GE FOMRADORES EM AÇÃO Educação do Campo - 2025| Gerado em: ' + new Date().toLocaleDateString('pt-BR') + '</p>';
-                
-                // I. IDENTIFICAÇÃO E CONTEXTO GERAL
-                reportBodyContent += '<h3>I. IDENTIFICAÇÃO E CONTEXTO GERAL</h3>';
-                reportBodyContent += '<p><strong>Nome da Escola:</strong> ' + nomeEscola + '</p>';
-                reportBodyContent += '<p><strong>Nome do Professor Cursista:</strong> ' + nomeProfessor + '</p>';
-                reportBodyContent += '<p><strong>Cidade / NRE:</strong> ' + cidadeEscola + ' / ' + nreEscola + '</p>';
-                reportBodyContent += '<p><strong>Tipo de Escola:</strong> ' + tipoEscola + '</p>';
-                reportBodyContent += '<p><strong>Modalidade:</strong> ' + modalidade + '</p>';
-                reportBodyContent += '<p><strong>Etapas de Ensino:</strong> ' + etapasEnsino + '</p>';
-                reportBodyContent += '<p><strong>Nº de Alunos:</strong> ' + numAlunos + '</p>';
-                reportBodyContent += '<p><strong>Comunidade/Bairro:</strong> ' + comunidadeNome + '</p>';
-                reportBodyContent += '<p><strong>Faixa Etária Predominante:</strong> ' + faixaEtaria + '</p>';
-                reportBodyContent += '<p><strong>Grupos Sociais/Étnicos:</strong> ' + grupoEtnico + '</p>';
-                reportBodyContent += '<p><strong>Problemas de Infraestrutura Urgentes:</strong> ' + problemasInfra + '</p>';
-
-                // II. EIXO 1: TRABALHO
-                reportBodyContent += '<h3 style="margin-top: 20px;">II. EIXO 1: TRABALHO</h3>';
-                reportBodyContent += '<p><strong>Renda Predominante:</strong> ' + eixo1_renda_predominante + '</p>';
-                reportBodyContent += '<p><strong>Status Comum de Trabalho:</strong> ' + eixo1_status_trabalho + '</p>';
-                reportBodyContent += '<p><strong>Principais Culturas/Produtos:</strong> ' + eixo1_culturas + '</p>';
-                reportBodyContent += '<p><strong>Destino da Produção:</strong> ' + eixo1_destino_producao + '</p>';
-                reportBodyContent += '<p><strong>Forma de Posse da Terra (e documentação):</strong> ' + eixo1_posse_terra + '</p>';
-                reportBodyContent += '<p><strong>Tecnologia Utilizada e Impacto:</strong> ' + eixo1_tecnologia + '</p>';
-                reportBodyContent += '<p><strong>Fontes de Crédito/Financiamento:</strong> ' + eixo1_credito_financiamento + '</p>';
-                reportBodyContent += '<p><strong>Liderança Feminina no Trabalho (e não remunerado):</strong> ' + eixo1_trabalho_mulheres + '</p>';
-                reportBodyContent += '<p><strong>Permanência e Oportunidades para Jovens:</strong> ' + eixo1_jovens_permanencia + '</p>';
-
-                // III. EIXO 2: CULTURA E IDENTIDADE
-                reportBodyContent += '<h3 style="margin-top: 20px;">III. EIXO 2: CULTURA E IDENTIDADE</h3>';
-                reportBodyContent += '<p><strong>Festas/Celebrações:</strong> ' + eixo2_festas + '</p>';
-                reportBodyContent += '<p><strong>Saberes Populares:</strong> ' + eixo2_saberes_populares + '</p>';
-                reportBodyContent += '<p><strong>Papel da Religiosidade/Igreja:</strong> ' + eixo2_religiosidade + '</p>';
-                reportBodyContent += '<p><strong>História/Lenda/Expressão Local:</strong> ' + eixo2_historia_local + '</p>';
-                reportBodyContent += '<p><strong>Principais Formas de Lazer:</strong> ' + eixo2_lazer + '</p>';
-                reportBodyContent += '<p><strong>Integração Cultural no Currículo Escolar:</strong> ' + eixo2_cultura_curriculo + '</p>';
-
-                // IV. EIXO 3: INTERDEPENDÊNCIA CAMPO-CIDADE / QUESTÃO AGRÁRIA
-                reportBodyContent += '<h3 style="margin-top: 20px;">IV. EIXO 3: INTERDEPENDÊNCIA CAMPO-CIDADE / QUESTÃO AGRÁRIA</h3>';
-                reportBodyContent += '<p><strong>Acesso a Serviços Essenciais:</strong> ' + eixo3_acesso_servicos + '</p>';
-                reportBodyContent += '<p><strong>Transporte e Estradas:</strong> ' + eixo3_transporte_estradas + '</p>';
-                reportBodyContent += '<p><strong>Venda da Produção e Preços Justos:</strong> ' + eixo3_venda_producao + '</p>';
-                reportBodyContent += '<p><strong>Acesso à Água (Principal Fonte):</strong> ' + eixo3_acesso_agua + '</p>';
-                reportBodyContent += '<p><strong>Escoamento de Dejetos/Esgoto:</strong> ' + eixo3_escoamento + '</p>';
-                reportBodyContent += '<p><strong>Descarte de Lixo e Esgoto (Detalhado):</strong> ' + eixo3_lixo_esgoto + '</p>';
-                reportBodyContent += '<p><strong>Problemas Ambientais:</strong> ' + eixo3_problemas_ambientais + '</p>';
-                reportBodyContent += '<p><strong>Conflitos por Recursos Naturais:</strong> ' + eixo3_conflitos + '</p>';
-
-                // V. EIXO 4: ORGANIZAÇÃO POLÍTICA, MOVIMENTOS SOCIAIS E CIDADANIA
-                reportBodyContent += '<h3 style="margin-top: 20px;">V. EIXO 4: ORGANIZAÇÃO POLÍTICA, MOVIMENTOS SOCIAIS E CIDADANIA</h3>';
-                reportBodyContent += '<p><strong>Grupos/Associações Ativas:</strong> ' + eixo4_grupos_ativos + '</p>';
-                reportBodyContent += '<p><strong>Liderança (Formal/Informal) e Gênero:</strong> ' + eixo4_lideranca + '</p>';
-                reportBodyContent += '<p><strong>Principal Luta/Reivindicação Coletiva:</strong> ' + eixo4_reivindicacao_principal + '</p>';
-                reportBodyContent += '<p><strong>Formas de Informação e Participação Política:</strong> ' + eixo4_informacao_politica + '</p>';
-                
-                // Rodapé
-                reportBodyContent += '<footer style="text-align: center; font-size: 10px; color: #999; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">';
-                reportBodyContent += 'Este documento é um subsídio para a construção do Projeto Político-Pedagógico (PPP) da Escola do Campo, conforme as Diretrizes Curriculares do Paraná.';
-                reportBodyContent += '<br><button onclick="window.print()" style="margin-top: 10px; padding: 5px 15px; background-color: #38a169; color: white; border: none; border-radius: 5px; cursor: pointer;">Imprimir este Documento</button>';
-                reportBodyContent += '</footer>';
-            reportBodyContent += '</div>';
-
-            // 7. Construção do HTML completo da nova janela (mínimo de concatenações)
-            const fullHtml = '<!DOCTYPE html><html lang="pt-BR"><head>' +
-                '<meta charset="UTF-8">' +
-                '<meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-                '<title>EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE - ' + nomeEscola + '</title>' +
-                '<style>@media print { button { display: none; } }</style>' +
-                '</head>' +
-                '<body style="margin: 0; padding: 0;">' +
-                    reportBodyContent +
-                '</body>' +
-                '</html>';
-
-            // 8. Abrir nova janela e escrever o conteúdo
-            const newWindow = window.open('', '_blank');
-            if (newWindow) {
-                newWindow.document.write(fullHtml);
-                newWindow.document.close();
-                newWindow.focus();
-            } else {
-                // Em vez de usar alert(), que é bloqueado, usamos console.error.
-                console.error("Popup bloqueado. Por favor, permita popups para gerar o relatório em uma nova janela.");
-            }
-        }
-
-    </script>
 </head>
 <body class="p-4 md:p-8">
+    <div class="app-shell no-print">
+        <header class="hero p-7 md:p-10 mb-7">
+            <div class="relative z-10 max-w-4xl">
+                <div class="eyebrow mb-4">Formadores em Ação • Educação do Campo</div>
+                <h1 class="text-3xl md:text-5xl font-black leading-tight mb-3">Compreensão da Realidade</h1>
+                <p class="text-white/85 text-base md:text-lg max-w-3xl">Instrumento de diagnóstico territorial, social e comunitário para apoiar a leitura da realidade da escola do campo e qualificar o planejamento pedagógico.</p>
+                <div class="flex flex-wrap gap-2 mt-5">
+                    <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-sm">Diagnóstico territorial</span>
+                    <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-sm">PPP e currículo</span>
+                    <span class="px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-sm">Relatório estruturado</span>
+                </div>
+            </div>
+        </header>
 
-    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-6 md:p-10 no-print">
-        
-        <!-- Title and Introduction -->
-        <h1 class="text-3xl font-bold text-campo-dark mb-2">EDUCAÇÃO DO CAMPO : COMPREENSAO DA REALIDADE</h1>
-        <p class="text-gray-600 mb-8">Utilize este formulário detalhado para estruturar a **Compreensão da Realidade** da sua escola e comunidade, de acordo com os Eixos Temáticos das DCEC/PR.</p>
+        <div class="grid lg:grid-cols-[260px_minmax(0,1fr)] gap-6 items-start">
+            <aside class="sticky-summary section-card p-4">
+                <div class="px-2 pb-3 mb-2 border-b">
+                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold">Roteiro do formulário</div>
+                    <div class="text-sm text-gray-600 mt-1">Preencha por etapas e gere o relatório ao final.</div>
+                </div>
+                <nav class="space-y-1">
+                    <a class="step-link" href="#sec-identificacao"><span class="step-dot">1</span>Identificação</a>
+                    <a class="step-link" href="#sec-trabalho"><span class="step-dot">2</span>Trabalho</a>
+                    <a class="step-link" href="#sec-cultura"><span class="step-dot">3</span>Cultura e identidade</a>
+                    <a class="step-link" href="#sec-territorio"><span class="step-dot">4</span>Campo–cidade</a>
+                    <a class="step-link" href="#sec-organizacao"><span class="step-dot">5</span>Organização social</a>
+                </nav>
+                <div class="mt-4 p-3 rounded-xl bg-[#f5faf7] border border-[#dfe7e2]">
+                    <div class="text-xs font-bold text-[#1f4d3b] uppercase tracking-wide mb-1">Orientação</div>
+                    <p class="text-xs text-gray-600 leading-relaxed">Registre informações observáveis e contextualizadas. Quando houver diferentes realidades na comunidade, descreva as principais variações.</p>
+                </div>
+            </aside>
 
-        <!-- I. IDENTIFICAÇÃO E CONTEXTO GERAL -->
-        <section class="mb-10 p-6 bg-campo-light rounded-lg shadow-inner">
-            <h2 class="text-xl font-semibold text-campo-dark mb-4 border-b pb-2">I. Identificação e Contexto Geral</h2>
+            <main class="space-y-6">
+                <div class="section-card p-5 md:p-6">
+                    <span class="subtle-badge">Instrumento formativo</span>
+                    <h2 class="text-xl md:text-2xl font-bold text-campo-dark mt-2">Leitura qualificada da comunidade escolar</h2>
+                    <p class="text-gray-600 mt-2">Organize as informações em cinco blocos. O relatório final reunirá automaticamente as respostas em uma estrutura pronta para impressão e registro.</p>
+                </div>
+<!-- I. IDENTIFICAÇÃO E CONTEXTO GERAL -->
+        <section id="sec-identificacao" class="section-card">
+            <div class="section-head">
+    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Etapa 1</div>
+    <h2 class="text-xl font-bold text-campo-dark">Identificação e contexto geral</h2>
+    <p class="helper">Dados básicos da escola, da comunidade e do território de referência.</p>
+</div>
+<div class="section-body">
             
             <div class="space-y-4">
                 <!-- Nome Escola, Cidade, NRE -->
@@ -241,10 +308,10 @@
                     <input type="text" id="nomeProfessor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
                 </div>
                 
-                <!-- Tipo de Escola, Modalidade, Etapas, Alunos -->
+                <!-- Caracterização da escola, Modalidade, Etapas, Alunos -->
                 <div class="md:flex md:space-x-4 space-y-4 md:space-y-0">
                     <div class="w-full md:w-1/5">
-                        <label for="tipoEscola" class="block text-sm font-medium text-gray-700">Tipo de Escola</label>
+                        <label for="tipoEscola" class="block text-sm font-medium text-gray-700">Caracterização da escola</label>
                         <select id="tipoEscola" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
                             <option value="Regular">Regular (Unidocente/Pluridocente)</option>
                             <option value="Ilhas">Ilhas</option>
@@ -264,7 +331,7 @@
                     </div>
                     <!-- FIM NOVO CAMPO -->
                     <div class="w-full md:w-1/5">
-                        <label for="numAlunos" class="block text-sm font-medium text-gray-700">Número Total de Alunos</label>
+                        <label for="numAlunos" class="block text-sm font-medium text-gray-700">Número total de estudantes</label>
                         <input type="number" id="numAlunos" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
                     </div>
                     <div class="flex-1">
@@ -288,8 +355,8 @@
                         <input type="text" id="faixaEtaria" placeholder="Ex: 80 famílias, predomínio de adultos (30-50 anos)." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green">
                     </div>
                     <div class="w-full md:w-1/2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Grupo étnico/Origem</label>
-                        <div class="flex flex-wrap gap-x-4 gap-y-2 p-2 bg-white rounded-md border border-gray-300">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Grupos sociais / pertencimentos presentes</label>
+                        <div class="flex flex-wrap gap-3 option-panel">
                             <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Indígena" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Indígena</span></label>
                             <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Quilombola" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Quilombola</span></label>
                             <label class="inline-flex items-center"><input type="checkbox" name="grupoEtnico" value="Posseiros" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Posseiros</span></label>
@@ -302,20 +369,26 @@
                     </div>
                 </div>
                 <div>
-                    <label for="problemasInfra" class="block text-sm font-medium text-gray-700">Problemas de infraestrutura básica mais urgentes (água, luz, estrada, internet, etc.)</label>
+                    <label for="problemasInfra" class="block text-sm font-medium text-gray-700">Principais desafios de infraestrutura (água, energia, estradas, conectividade etc.)</label>
                     <textarea id="problemasInfra" placeholder="Ex: Qualidade da água, falta de asfalto na principal estrada, sinal de internet ruim." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
                 </div>
             </div>
+        </div>
         </section>
 
         <!-- II. EIXO 1: TRABALHO -->
-        <section class="space-y-8 mb-10">
-            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
-                <h3 class="text-lg font-semibold text-campo-dark mb-3">II. Eixo 1: Trabalho (Divisão Social e Territorial)</h3>
+        <section class="space-y-6">
+            <div id="sec-trabalho" class="section-card">
+                <div class="section-head">
+                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Etapa 2</div>
+                    <h3 class="text-xl font-bold text-campo-dark">Trabalho e organização produtiva</h3>
+                    <p class="helper">Relações de trabalho, renda, produção, terra, tecnologia e permanência dos jovens.</p>
+                </div>
+                <div class="section-body">
                 
                 <!-- Renda e Atividade Predominante (Checkboxes) -->
-                <label class="block text-sm font-medium text-gray-700 mb-2">2.1. Principal Fonte de Renda / Atividade Predominante:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <label class="block text-sm font-medium text-gray-700 mb-2">2.1. Principal fonte de renda / atividade predominante:</label>
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Agricultura Familiar" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Agricultura Familiar</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Agronegócio/Grandes Fazendas" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Agronegócio/Grandes Fazendas</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_renda_predominante" value="Pecuária (Leite/Corte)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Pecuária (Leite/Corte)</span></label>
@@ -326,8 +399,8 @@
                 </div>
 
                 <!-- Status da Relação de Trabalho Comum (Checkboxes) -->
-                <label class="block text-sm font-medium text-gray-700 mb-2">2.2. Status da Relação de Trabalho Comum na Comunidade:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <label class="block text-sm font-medium text-gray-700 mb-2">2.2. Relações de trabalho mais frequentes na comunidade:</label>
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Proprietário(a) / Familiar" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Proprietário(a) / Familiar</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Assalariado(a) (Com carteira)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Assalariado(a) (Com carteira)</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_status_trabalho" value="Assalariado(a) (Sem carteira)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Assalariado(a) (Sem carteira)</span></label>
@@ -338,8 +411,8 @@
                 </div>
                 
                 <!-- Culturas/Produção Principal (Checkboxes) -->
-                <label class="block text-sm font-medium text-gray-700 mb-2">2.3. Tipos de Culturas ou Produção Principal:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <label class="block text-sm font-medium text-gray-700 mb-2">2.3. Principais culturas e formas de produção:</label>
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Soja" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Soja</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Milho" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Milho</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo1_culturas" value="Trigo/Cereais de Inverno" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Trigo/Cereais de Inverno</span></label>
@@ -378,14 +451,20 @@
                         <textarea id="eixo1_credito_financiamento" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
                     </div>
                 </div>
+                </div>
             </div>
 
             <!-- III. EIXO 2: CULTURA E IDENTIDADE -->
-            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
-                <h3 class="text-lg font-semibold text-campo-dark mb-3">III. Eixo 2: Cultura e Identidade</h3>
+            <div id="sec-cultura" class="section-card">
+                <div class="section-head">
+                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Etapa 3</div>
+                    <h3 class="text-xl font-bold text-campo-dark">Cultura e identidade</h3>
+                    <p class="helper">Festas, saberes, religiosidade, memória, lazer e presença da cultura local no currículo.</p>
+                </div>
+                <div class="section-body">
                 
                 <label class="block text-sm font-medium text-gray-700 mb-2">3.1. Festas, celebrações ou tradições mais importantes:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Festa do Padroeiro" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festa do Padroeiro</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Festa da Colheita/Tradição Agrícola" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festa da Colheita/Tradição Agrícola</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_festas" value="Festas Juninas/Julhinas" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festas Juninas/Julhinas</span></label>
@@ -395,7 +474,7 @@
                 </div>
 
                 <label class="block text-sm font-medium text-gray-700 mb-2">3.2. Saberes populares valorizados e utilizados no dia a dia:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Uso de plantas medicinais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Uso de plantas medicinais</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Culinária típica/Receitas tradicionais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Culinária típica/Receitas tradicionais</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_saberes_populares" value="Técnicas de artesanato/manuais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Técnicas de artesanato/manuais</span></label>
@@ -405,7 +484,7 @@
                 </div>
 
                 <label class="block text-sm font-medium text-gray-700 mb-2">3.3. Principais formas de lazer e entretenimento:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Esportes (Futebol, Vôlei)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Esportes (Futebol, Vôlei)</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Eventos da Igreja" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Eventos da Igreja</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo2_lazer" value="Festas em Clubes Rurais" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Festas em Clubes Rurais</span></label>
@@ -430,14 +509,20 @@
                         <textarea id="eixo2_cultura_curriculo" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
                     </div>
                 </div>
+                </div>
             </div>
             
             <!-- IV. EIXO 3: INTERDEPENDÊNCIA CAMPO-CIDADE / QUESTÃO AGRÁRIA -->
-            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
-                <h3 class="text-lg font-semibold text-campo-dark mb-3">IV. Eixo 3: Interdependência Campo-Cidade / Questão Agrária</h3>
+            <div id="sec-territorio" class="section-card">
+                <div class="section-head">
+                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Etapa 4</div>
+                    <h3 class="text-xl font-bold text-campo-dark">Interdependência campo–cidade e questão agrária</h3>
+                    <p class="helper">Serviços, circulação, infraestrutura, água, saneamento, ambiente e conflitos territoriais.</p>
+                </div>
+                <div class="section-body">
 
-                <label class="block text-sm font-medium text-gray-700 mb-2">4.1. A comunidade tem acesso fácil e rápido a quais serviços essenciais?</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <label class="block text-sm font-medium text-gray-700 mb-2">4.1. A quais serviços essenciais a comunidade tem acesso com maior facilidade?</label>
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Posto de Saúde/Atendimento Médico" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Posto de Saúde/Atendimento Médico</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Ensino Técnico/Superior" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Ensino Técnico/Superior</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_servicos" value="Serviços Bancários" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Serviços Bancários</span></label>
@@ -449,7 +534,7 @@
                 </div>
 
                 <label class="block text-sm font-medium text-gray-700 mb-2">4.2. Principais problemas ambientais do território:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Contaminação por Agrotóxicos" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Contaminação por Agrotóxicos</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Poluição do Ar (Fumaça ou Odor Forte)" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Poluição do Ar (Fumaça ou Odor Forte)</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo3_problemas_ambientais" value="Desmatamento ou Erosão" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Desmatamento ou Erosão</span></label>
@@ -471,7 +556,7 @@
                     </div>
                     
                     <!-- Acesso à Água (CHECKBOXES) -->
-                    <div class="border p-3 rounded-md bg-white">
+                    <div class="option-panel">
                         <label class="block text-sm font-medium text-gray-700 mb-2">4.5. Acesso à Água (Principal Fonte):</label>
                         <div class="flex flex-wrap gap-4">
                             <label class="inline-flex items-center"><input type="checkbox" name="eixo3_acesso_agua" value="Encanada/Tratada" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Encanada/Tratada (Rede Pública)</span></label>
@@ -484,7 +569,7 @@
                     </div>
 
                     <!-- Escoamento de Dejetos (CHECKBOXES) -->
-                    <div class="border p-3 rounded-md bg-white">
+                    <div class="option-panel">
                         <label class="block text-sm font-medium text-gray-700 mb-2">4.6. Escoamento de Dejetos / Esgoto (Principal Forma):</label>
                         <div class="flex flex-wrap gap-4">
                             <label class="inline-flex items-center"><input type="checkbox" name="eixo3_escoamento" value="Rede de Esgoto" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Rede de Esgoto (Tratado)</span></label>
@@ -505,14 +590,20 @@
                         <textarea id="eixo3_conflitos" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
                     </div>
                 </div>
+                </div>
             </div>
 
             <!-- V. EIXO 4: ORGANIZAÇÃO POLÍTICA, MOVIMENTOS SOCIAIS E CIDADANIA -->
-            <div class="p-6 border border-campo-green/50 rounded-lg shadow">
-                <h3 class="text-lg font-semibold text-campo-dark mb-3">V. Eixo 4: Organização Política, Movimentos Sociais e Cidadania</h3>
+            <div id="sec-organizacao" class="section-card">
+                <div class="section-head">
+                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold mb-1">Etapa 5</div>
+                    <h3 class="text-xl font-bold text-campo-dark">Organização social, participação e cidadania</h3>
+                    <p class="helper">Associações, lideranças, reivindicações coletivas e formas de participação comunitária.</p>
+                </div>
+                <div class="section-body">
                 
-                <label class="block text-sm font-medium text-gray-700 mb-2">5.1. Grupos ou associações mais ativos na comunidade:</label>
-                <div class="flex flex-wrap gap-4 mb-4 p-3 bg-gray-50 rounded-md border">
+                <label class="block text-sm font-medium text-gray-700 mb-2">5.1. Grupos, associações ou organizações mais atuantes na comunidade:</label>
+                <div class="flex flex-wrap gap-3 mb-5 option-panel">
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Associação de Moradores/APMF" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Associação de Moradores/APMF</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Sindicato Rural / de Trabalhadores" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Sindicato Rural / de Trabalhadores</span></label>
                     <label class="inline-flex items-center"><input type="checkbox" name="eixo4_grupos_ativos" value="Cooperativas de Produção/Crédito" class="rounded text-campo-green focus:ring-campo-green"><span class="ml-2 text-sm">Cooperativas de Produção/Crédito</span></label>
@@ -537,17 +628,30 @@
                         <textarea id="eixo4_informacao_politica" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-campo-green focus:ring-campo-green"></textarea>
                     </div>
                 </div>
+                </div>
             </div>
 
         </section>
 
         <!-- REPORT GENERATION BUTTON -->
-        <div class="text-center no-print">
-            <button onclick="generateReport()" class="px-8 py-3 bg-campo-green text-white font-bold rounded-full shadow-lg hover:bg-campo-dark transition duration-300 focus:outline-none focus:ring-4 focus:ring-campo-green focus:ring-opacity-50">
-                Gerar Relatório Estruturado em Nova Janela
-            </button>
+        <div class="section-card p-5 md:p-6 no-print">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div class="text-xs uppercase tracking-wider text-gray-500 font-bold">Finalização</div>
+                    <h3 class="text-lg font-bold text-campo-dark mt-1">Gerar relatório consolidado</h3>
+                    <p class="text-sm text-gray-600 mt-1">Revise as respostas e gere uma versão organizada para impressão ou salvamento em PDF.</p>
+                </div>
+                <button onclick="generateReport()" class="primary-btn">
+                    Gerar relatório
+                </button>
+            </div>
         </div>
 
+        <footer class="text-center text-xs text-gray-500 py-4 no-print">
+            Educação do Campo • instrumento de compreensão da realidade escolar e comunitária
+        </footer>
+            </main>
+        </div>
     </div>
 
 </body>
